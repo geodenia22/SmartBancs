@@ -1,0 +1,76 @@
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: smartbancs-postgres
+    environment:
+      POSTGRES_DB: smartbancs
+      POSTGRES_USER: smartbancs
+      POSTGRES_PASSWORD: "SmartBancs2026!"
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartbancs -d smartbancs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: smartbancs-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: smartbancs
+      RABBITMQ_DEFAULT_PASS: "smartbancs123"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  transaction-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartbancs-transaction-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smartbancs
+      SPRING_DATASOURCE_USERNAME: smartbancs
+      SPRING_DATASOURCE_PASSWORD: "SmartBancs2026!"
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: smartbancs
+      SPRING_RABBITMQ_PASSWORD: "smartbancs123"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: smartbancs-ai-service
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: smartbancs
+      RABBITMQ_PASSWORD: "smartbancs123"
+    ports:
+      - "8001:8000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

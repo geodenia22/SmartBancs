@@ -1,0 +1,9 @@
+transaction_id,source_account_id,destination_account_id,amount,currency,status,created_at
+tx-001,ACC-001,ACC-002,150.50,usd,completed,2026-09-20 10:15:00
+tx-002,ACC-003,ACC-004,25000,USD,COMPLETED,2026/09/20 02:15:00
+tx-003,ACC-005,ACC-006,,usd,completed,2026-09-20 14:30:00
+tx-004,ACC-007,,75.25,Usd,completed,20-09-2026 15:45:00
+tx-005,ACC-008,ACC-009,-50,USD,completed,2026-09-20 16:00:00
+tx-006,ACC-010,ACC-011,500,eur,completed,2026-09-20 17:10:00
+tx-007,ACC-012,ACC-013,125.75,usd,,2026-09-20 18:20:00
+tx-008,ACC-014,ACC-015,45.99,USD,completed,

@@ -1,0 +1,5 @@
+transaction_id,source_account_id,destination_account_id,amount,currency,status,created_at,hour_of_day,is_night_transaction
+tx-001,ACC-001,ACC-002,150.5,USD,COMPLETED,2026-09-20T10:15:00,10,False
+tx-002,ACC-003,ACC-004,25000.0,USD,COMPLETED,2026-09-20T02:15:00,2,True
+tx-006,ACC-010,ACC-011,500.0,EUR,COMPLETED,2026-09-20T17:10:00,17,False
+tx-007,ACC-012,ACC-013,125.75,USD,UNKNOWN,2026-09-20T18:20:00,18,False
